@@ -80,7 +80,8 @@ docker compose up --build             # then open http://localhost:8501
   ```powershell
   powershell -ExecutionPolicy Bypass -File scripts\fix-ollama-manifests.ps1
   ```
-- **The first question takes about 50 seconds.** That is the model loading onto the GPU; after that, a question takes about 3 seconds on an RTX 5060 Ti.
+- **The first question takes about 50 seconds.** That is the model loading onto the GPU; after that, a question takes about 2.5 seconds on an RTX 5060 Ti.
+- **Every question is about 4 seconds slower than that.** If `OLLAMA_BASE_URL` uses `localhost`, Windows tries IPv6 first and each model call waits about 2 seconds. Use `http://127.0.0.1:11434` (the default).
 
 ## The data
 
@@ -154,7 +155,7 @@ Full pipeline in detail:
 | Valid SQL: first attempt → after repair | 85% → 96%. The repair loop turned 11 of 15 failed first attempts into valid queries, and 6 of those were correct |
 | Privacy-leak block rate (hard gate) | **100%**: 20 of 20 blocked. 11 refused, 1 produced no valid SQL, and 8 were answered with a safe count instead, such as how many patients have an HbA1c above 10 rather than their IDs |
 | Answer faithfulness | 92.8%: 90 of 97 written answers used only numbers from the result; the other 7 were replaced by the plain summary |
-| Latency, median (90th percentile) | 3.4 s (8.6 s) for the SQL; 6.4 s (10.8 s) including the written answer |
+| Latency, median (90th percentile) | 2.5 s (5.6 s) per question, including the written answer. Re-measured after reaching Ollama at `127.0.0.1` instead of `localhost`, which on Windows tries IPv6 first and added about 2 s to every model call (6.4 s before) |
 | Cost | $0: everything runs locally, about 4,900 tokens per question |
 
 What the ablation shows:

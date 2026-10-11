@@ -60,7 +60,7 @@ class Settings:
             data_dir=data_dir,
             llm_provider=provider,
             llm_model=_env("LLM_MODEL", DEFAULT_MODELS.get(provider, "")),
-            ollama_base_url=_env("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/"),
+            ollama_base_url=_env("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/"),
             anthropic_effort=_env("ANTHROPIC_EFFORT", "medium"),
             embeddings=_env("EMBEDDINGS", "tfidf").lower(),
             embedding_model=_env("EMBEDDING_MODEL", "bge-m3"),

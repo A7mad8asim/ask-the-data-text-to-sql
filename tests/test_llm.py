@@ -28,8 +28,8 @@ def test_ollama_request_and_parsing(monkeypatch):
         })
 
     monkeypatch.setattr("askdata.llm.requests.post", fake_post)
-    out = OllamaLLM("qwen3:8b", "http://localhost:11434").complete("system text", [{"role": "user", "content": "q"}])
-    assert sent["url"] == "http://localhost:11434/api/chat"
+    out = OllamaLLM("qwen3:8b", "http://127.0.0.1:11434").complete("system text", [{"role": "user", "content": "q"}])
+    assert sent["url"] == "http://127.0.0.1:11434/api/chat"
     assert sent["json"]["messages"][0] == {"role": "system", "content": "system text"}
     assert sent["json"]["think"] is False and sent["json"]["options"]["temperature"] == 0
     assert out.text == "```sql\nSELECT 1\n```" and out.input_tokens == 120 and out.cost_usd == 0
